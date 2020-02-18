@@ -1,3 +1,11 @@
+/*
+Title: LAB 2
+Author: Sterling Wenzelbach
+Student ID: 100299329
+Since: 2020-02-18
+*/
+
+//Classes
 class Contact
 {
     constructor(contactName = "", emailAddress = "", contactNumber = "", contactMessage = "")
@@ -8,10 +16,17 @@ class Contact
         this.contactMessage = contactMessage;
     }
 }
-
-
-
-
+class User
+{
+    constructor(firstname = "John", lastName = "Doe", username = "", email = "", password = "")
+    {
+        this.firstName = firstName;
+        this.lastName = lastname;
+        this.username = username;
+        this.email = email;  
+        this.password = password; 
+    }
+}
 "use strict";
 //IIFE - Immediately Invoked Function Expression
 // mean? -> anonymous self-executing function
