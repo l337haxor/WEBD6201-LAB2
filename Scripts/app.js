@@ -5,17 +5,6 @@ Student ID: 100299329
 Since: 2020-02-18
 */
 
-//Classes
-class Contact
-{
-    constructor(contactName = "", emailAddress = "", contactNumber = "", contactMessage = "")
-    {
-        this.contactName = contactName;
-        this.emailAddress = emailAddress;
-        this.contactNumber = contactNumber;
-        this.contactMessage = contactMessage;
-    }
-}
 class User
 {
     constructor(firstname = "John", lastName = "Doe", username = "", email = "", password = "")
@@ -36,7 +25,7 @@ let app;
 
     // Declare Function Variables here...
     console.log("%cDeclaring Variables", "color: red;")
-    let contactObject = new Contact();
+    
 
     /**
      * Variable initialization in this function
@@ -51,7 +40,7 @@ let app;
 
     function PageSwitcher()
     {
-        let name = window.location.pathname;
+       let name = window.location.pathname;
 
        let pageName = name.substring(1, name.length - 5);
 
@@ -117,6 +106,37 @@ let app;
     function DisplayProductsContent()
     {
         document.title = "WEBD6201 - Products";
+
+        try 
+        {
+            let XHR = new XMLHttpRequest();
+
+            XHR.addEventListener("readystatechange", function(){
+                if(XHR.readyState === 4 && XHR.status === 200)
+                {
+                    console.log("everything is ready");
+                    //console.log(XHR.responseText);
+
+                    let data = JSON.parse(XHR.responseText);
+
+                    data.products.forEach(item => {
+                        console.log(item);
+                    });
+                }
+
+
+            });
+
+            XHR.open("GET", "./data/products.json", true); 
+
+            XHR.send();
+
+        } catch (error) {
+            console.log("error is " + error)
+        }
+        
+
+        
     }
 
     function DisplayServicesContent()
