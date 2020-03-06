@@ -82,61 +82,12 @@ let app;
     function DisplayHomePageContent()
     {
         document.getElementById("home").className = "nav-item active";
-        /* $("button").click(()=>{
-            location.href = "projects.html";
-        }); */
-
-        document.title = "WEBD6201 - Home";
-
-        let progressbar = $( "#progressBar" ).progressbar({
-            value: 37
-          });
-
-        console.log(progressbar);
-
-        $("#projectsButton").click(function(){
-            $(this).fadeOut(3000, "linear", ()=>{
-                $(this).fadeIn(1000, "linear", ()=>{
-                    location.href = "projects.html";
-                });
-            });
-        });
+      
     }
 
     function DisplayProductsContent()
     {
         document.title = "WEBD6201 - Products";
-
-        try 
-        {
-            let XHR = new XMLHttpRequest();
-
-            XHR.addEventListener("readystatechange", function(){
-                if(XHR.readyState === 4 && XHR.status === 200)
-                {
-                    console.log("everything is ready");
-                    //console.log(XHR.responseText);
-
-                    let data = JSON.parse(XHR.responseText);
-
-                    data.products.forEach(item => {
-                        console.log(item);
-                    });
-                }
-
-
-            });
-
-            XHR.open("GET", "./data/products.json", true); 
-
-            XHR.send();
-
-        } catch (error) {
-            console.log("error is " + error)
-        }
-        
-
-        
     }
 
     function DisplayServicesContent()
@@ -279,9 +230,26 @@ let app;
 
         $("#loginForm").submit  ((e)=>
         {
-           
-            e.preventDefault();
-            e.stopPropagation();
+            if(document.getElementById("loginForm").checkValidity() == false)
+            {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+          
+
+            let loginName = $("#loginName").val();
+            let password = $("#password").val();
+
+            let navBarName = $("#login")[0];
+            
+            let loggedInName = document.createElement('span');
+            loggedInName.setAttribute('class', 'navbar-text');
+            loggedInName.textContent = loginName;
+            let parentNode = navBarName.parentNode;
+            
+            parentNode.insertBefore(loggedInName, navBarName);
+            
+
             $("#loginForm")[0].reset();
             $("#login").hide();
             $("#logout").show();
@@ -293,6 +261,51 @@ let app;
     function DisplayRegisterContent()
     {
         document.title = "WEBD6201 - Register";
+
+        let errorMessage = document.createElement('div');
+        errorMessage.setAttribute('id', 'errorMessage');
+        errorMessage.css.style = display.none;
+
+        $("#registerForm").submit  ((e)=>
+        {
+            if(document.getElementById("registerForm").checkValidity() == false)
+            {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            
+            let contactName = $("#contactName").val();
+            let emailAddress = $("#emailAddress").val();
+            let contactNumber = $("#contactNumber").val();
+            let contactMessage = $("#contactMessage").val();
+
+            console.log(`Contact Name: ${contactName}`);
+            console.log(`Email Address: ${emailAddress}`);
+            console.log(`Contact Number: ${contactNumber}`);
+            console.log(`Contact Message: ${contactMessage}`);
+
+            contactObject.contactName = contactName;
+            contactObject.emailAddress = emailAddress;
+            contactObject.contactNumber = contactNumber;
+            contactObject.contactMessage = contactMessage;
+
+            console.log(contactObject);
+
+            clearForm();
+
+            $("#resetButton").click((e)=>
+            {
+                e.preventDefault();
+                if(confirm("Are You Sure?"))
+                {
+                    clearForm();
+                }
+    
+                
+            });
+        });
+
     }
 
     /**
