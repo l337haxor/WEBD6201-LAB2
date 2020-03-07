@@ -7,11 +7,11 @@ Since: 2020-02-18
 
 class User
 {
-    constructor(firstname = "John", lastName = "Doe", username = "", email = "", password = "")
+    constructor(firstName = "John", lastName = "Doe", userName = "", email = "", password = "")
     {
         this.firstName = firstName;
-        this.lastName = lastname;
-        this.username = username;
+        this.lastName = lastName;
+        this.userName = userName;
         this.email = email;  
         this.password = password; 
     }
@@ -103,120 +103,6 @@ let app;
     function DisplayContactContent()
     {
         document.title = "WEBD6201 - Contact Us";
-        function clearForm()
-        {
-            //document.getElementById("contactForm").reset();
-            $("#contactForm")[0].reset();
-            $("#errorMessage").hide();
-        }
-
-        function validateInput(selector, condition, errorMessage)
-        {
-            if(condition)
-            {
-                $("#errorMessage").show();
-                $("#errorMessage").text(errorMessage);
-                $(selector).select();
-                $(selector).css("border", "2px solid red");
-            }
-            else
-            {
-                $("#errorMessage").hide();
-                $(selector).css("border", "1px solid #ced4da");
-            }
-        }
-
-        $("#errorMessage").hide();
-        $("#contactName").select();
-
-        // Contact Name Events
-        $("#contactName").blur((e)=>
-        {
-            validateInput("#contactName",( $("#contactName").val().length < 2),"Contact Name is Too Short");
-        });
-
-        $("#contactName").focus((e)=>
-        {
-            $("#contactName").select();
-        });
-
-        // Email Events
-        $("#emailAddress").blur((e)=>
-        {
-            validateInput("#emailAddress",($("#emailAddress").val().length < 8) || (!$("#emailAddress").val().includes("@")),"Invalid Email Address");
-        });
-
-        $("#emailAddress").focus((e)=>
-        {
-            $("#emailAddress").select();
-        });
-
-        // Contact Number Events
-        $("#contactNumber").blur((e)=>
-        {
-            let phonePattern = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/
-            let phoneNumber = $("#contactNumber").val();
-
-            validateInput("#contactNumber",( !phonePattern.test(phoneNumber)),"Invalid Contact Number");
-        });
-
-        $("#contactNumber").focus((e)=>
-        {
-            $("#contactNumber").select();
-        });
-
-        // Contact Message Events
-        $("#contactMessage").blur((e)=>
-        {
-            validateInput("#contactMessage",( $("#contactMessage").val().length < 2 ),"Contact Message Too Short");
-        });
-
-        $("#contactMessage").focus((e)=>
-        {
-            $("#contactMessage").select();
-        });
-
-
-        $("#contactForm").submit  ((e)=>
-        {
-            if(document.getElementById("contactForm").checkValidity() == false)
-            {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log("form not valid");
-            }
-
-            
-            let contactName = $("#contactName").val();
-            let emailAddress = $("#emailAddress").val();
-            let contactNumber = $("#contactNumber").val();
-            let contactMessage = $("#contactMessage").val();
-
-            console.log(`Contact Name: ${contactName}`);
-            console.log(`Email Address: ${emailAddress}`);
-            console.log(`Contact Number: ${contactNumber}`);
-            console.log(`Contact Message: ${contactMessage}`);
-
-            contactObject.contactName = contactName;
-            contactObject.emailAddress = emailAddress;
-            contactObject.contactNumber = contactNumber;
-            contactObject.contactMessage = contactMessage;
-
-            console.log(contactObject);
-
-            clearForm();
-        });
-
-        $("#resetButton").click((e)=>
-        {
-            e.preventDefault();
-            if(confirm("Are You Sure?"))
-            {
-                clearForm();
-            }
-
-            
-        });
     }
 
     function DisplayProjectsContent()
@@ -241,13 +127,20 @@ let app;
             let password = $("#password").val();
 
             let navBarName = $("#login")[0];
+            let existingNavText = $(".navbar-text");
+            if(existingNavText.length > 0) {
+                $(".navbar-text").html(loginName);
+            }
+            else {
+                let loggedInName = document.createElement('span');
+                loggedInName.setAttribute('class', 'navbar-text');
+                loggedInName.textContent = loginName;
+                let parentNode = navBarName.parentNode;
+                parentNode.insertBefore(loggedInName, navBarName);
+            }
             
-            let loggedInName = document.createElement('span');
-            loggedInName.setAttribute('class', 'navbar-text');
-            loggedInName.textContent = loginName;
-            let parentNode = navBarName.parentNode;
             
-            parentNode.insertBefore(loggedInName, navBarName);
+            
             
 
             $("#loginForm")[0].reset();
@@ -262,50 +155,167 @@ let app;
     {
         document.title = "WEBD6201 - Register";
 
+        let formErrors = true;
+        //Create errormessage display element
         let errorMessage = document.createElement('div');
+        $(errorMessage).addClass("alert alert-danger");
         errorMessage.setAttribute('id', 'errorMessage');
-        errorMessage.css.style = display.none;
+        //errorMessage.setAttribute('class', "alert alert-danger");
 
+        //Insert the errormessage display after this...
+        $(".hint-text")[0].append(errorMessage);
+
+        //clears the form
+        function clearForm()
+        {
+            $("#registerForm")[0].reset();
+            $("#errorMessage").hide();
+        }
+
+        function validateInput(selector, condition, errorMessage)
+        {
+            if(condition)
+            {
+                $("#errorMessage").show();
+                $("#errorMessage").text(errorMessage);
+                $(selector).select();
+                $(selector).css("border", "2px solid red");
+            }
+            else
+            {
+                $("#errorMessage").hide();
+                $(selector).css("border", "1px solid #ced4da");
+            }
+        }
+
+        $("#errorMessage").hide();
+        
+        //$("#firstName").select();
+
+        // First Name Events
+        $("#firstName").blur((e)=>
+        {
+            validateInput("#firstName",( $("#firstName").val().length < 2),"First Name is Too Short");
+        });
+
+        $("#firstName").focus((e)=>
+        {
+            $("#firstName").select();
+        });
+
+        
+        // Last Name Events
+        $("#lastName").blur((e)=>
+        {
+            validateInput("#lastName",( $("#lastName").val().length < 2),"Last Name is Too Short");
+        });
+
+        $("#lastName").focus((e)=>
+        {
+            $("#lastName").select();
+        });
+
+        // Email Events
+        $("#emailAddress").blur((e)=>
+        {
+            validateInput("#emailAddress",($("#emailAddress").val().length < 8) || (!$("#emailAddress").val().includes("@")),"Invalid Email Address");
+        });
+
+        $("#emailAddress").focus((e)=>
+        {
+            $("#emailAddress").select();
+        });
+        // password Events
+        $("#password").blur((e)=>
+        {
+            validateInput("#password",($("#password").val().length < 6) ,"Password is too short!");
+
+        });
+
+        $("#password").focus((e)=>
+        {
+            $("#password").select();
+        });
+
+        // confirm password Events
+        $("#confirmPassword").blur((e)=>
+        {
+             validateInput("#confirmPassword",($("#confirmPassword").val().length < 6) ,"Confirm Password is too short!");
+             if($("#confirmPassword").val() != $("#password").val())
+             {
+                 $("#confirmPassword").select();
+                 $("#errorMessage").show();
+                 $("#errorMessage").text("Passwords do not match!");
+             }
+        });
+
+
+        $("#confirmPassword").focus((e)=>
+        {
+            $("#confirmPassword").select();
+        });
+
+        //When the form is submitted
         $("#registerForm").submit  ((e)=>
         {
+            //stop default behaviours
+            e.preventDefault();
+            e.stopPropagation();
+
             if(document.getElementById("registerForm").checkValidity() == false)
             {
-                e.preventDefault();
-                e.stopPropagation();
+                // console.log($("#password").val());
+                // console.log($("#confirmPassword").val());
+
+                if($("#password").val() != $("#confirmPassword").val())
+                {
+                    $("#errorMessage").show();
+                    $("#errorMessage").text("Passwords do not match!");
+
+                    console.log("not match");
+                }
+                else
+                {
+                    console.log("match");
+                    clearForm();
+                }
+
+            }
+
+        if(!formErrors)
+        {
+            //Create a new user object
+            let user = new User();
+
+            //Fetch values from input boxes
+            let firstName = $("#firstName").val();
+            let lastName = $("#lastName").val();
+            let emailAddress = $("#emailAddress").val();
+            let password = $("#password").val();
+
+            user.firstName = firstName;
+            user.lastName = lastName;
+            user.emailAddress = emailAddress;
+            user.password = password;
+
+            console.log(user);
+        }
+        else
+        {
+            
+        }
+        });
+
+        /* $("#resetButton").click((e)=>
+        {
+            e.preventDefault();
+            if(confirm("Are You Sure?"))
+            {
+                clearForm();
             }
 
             
-            let contactName = $("#contactName").val();
-            let emailAddress = $("#emailAddress").val();
-            let contactNumber = $("#contactNumber").val();
-            let contactMessage = $("#contactMessage").val();
-
-            console.log(`Contact Name: ${contactName}`);
-            console.log(`Email Address: ${emailAddress}`);
-            console.log(`Contact Number: ${contactNumber}`);
-            console.log(`Contact Message: ${contactMessage}`);
-
-            contactObject.contactName = contactName;
-            contactObject.emailAddress = emailAddress;
-            contactObject.contactNumber = contactNumber;
-            contactObject.contactMessage = contactMessage;
-
-            console.log(contactObject);
-
-            clearForm();
-
-            $("#resetButton").click((e)=>
-            {
-                e.preventDefault();
-                if(confirm("Are You Sure?"))
-                {
-                    clearForm();
-                }
-    
-                
-            });
-        });
-
+        }); */
     }
 
     /**
