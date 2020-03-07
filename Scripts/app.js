@@ -120,33 +120,41 @@ let app;
             {
                 e.preventDefault();
                 e.stopPropagation();
+
+                //if inputs are not empty/null
+                if(!$("#loginName").val() == null || $("#password").val() == null)
+                {
+                    console.log("not empty");
+                    //fetch values
+                    let loginName = $("#loginName").val();
+                    let password = $("#password").val();
+        
+                    let navBarName = $("#login")[0];
+                    let existingNavText = $(".navbar-text");
+
+                    //if username exists, clear it
+                    if(existingNavText.length > 0) {
+                        $(".navbar-text").html(loginName);
+                    }
+                    else 
+                    {
+                        //create login name element and insert it.
+                        let loggedInName = document.createElement('span');
+                        loggedInName.setAttribute('class', 'navbar-text');
+                        loggedInName.textContent = loginName;
+                        let parentNode = navBarName.parentNode;
+                        parentNode.insertBefore(loggedInName, navBarName);
+
+                        $("#loginForm")[0].reset();
+                        $("#login").hide();
+                        $("#logout").show();
+                    }
+                }
+                else
+                {
+                    console.log("empty");
+                }
             }
-          
-
-            let loginName = $("#loginName").val();
-            let password = $("#password").val();
-
-            let navBarName = $("#login")[0];
-            let existingNavText = $(".navbar-text");
-            if(existingNavText.length > 0) {
-                $(".navbar-text").html(loginName);
-            }
-            else {
-                let loggedInName = document.createElement('span');
-                loggedInName.setAttribute('class', 'navbar-text');
-                loggedInName.textContent = loginName;
-                let parentNode = navBarName.parentNode;
-                parentNode.insertBefore(loggedInName, navBarName);
-            }
-            
-            
-            
-            
-
-            $("#loginForm")[0].reset();
-            $("#login").hide();
-            $("#logout").show();
-
         });
 
     }
@@ -155,7 +163,6 @@ let app;
     {
         document.title = "WEBD6201 - Register";
 
-        let formErrors = true;
         //Create errormessage display element
         let errorMessage = document.createElement('div');
         $(errorMessage).addClass("alert alert-danger");
@@ -240,6 +247,7 @@ let app;
         // confirm password Events
         $("#confirmPassword").blur((e)=>
         {
+            //check that passwords match
              validateInput("#confirmPassword",($("#confirmPassword").val().length < 6) ,"Confirm Password is too short!");
              if($("#confirmPassword").val() != $("#password").val())
              {
@@ -282,8 +290,6 @@ let app;
 
             }
 
-        if(!formErrors)
-        {
             //Create a new user object
             let user = new User();
 
@@ -293,29 +299,14 @@ let app;
             let emailAddress = $("#emailAddress").val();
             let password = $("#password").val();
 
+            //set user values
             user.firstName = firstName;
             user.lastName = lastName;
             user.emailAddress = emailAddress;
             user.password = password;
 
             console.log(user);
-        }
-        else
-        {
-            
-        }
         });
-
-        /* $("#resetButton").click((e)=>
-        {
-            e.preventDefault();
-            if(confirm("Are You Sure?"))
-            {
-                clearForm();
-            }
-
-            
-        }); */
     }
 
     /**
