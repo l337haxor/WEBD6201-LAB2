@@ -7,12 +7,12 @@ Since: 2020-02-18
 
 class User
 {
-    constructor(firstName = "John", lastName = "Doe", userName = "", email = "", password = "")
+    constructor(firstName = "John", lastName = "Doe", userName = "", emailAddress = "", password = "")
     {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
-        this.email = email;  
+        this.emailAddress = emailAddress;  
         this.password = password; 
     }
 }
